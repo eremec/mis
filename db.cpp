@@ -2,6 +2,24 @@
 #include <fstream>
 #include <sstream>
 
+void truncateDb () {
+    system("exec rm -r db/*");
+
+    system("exec mkdir db/Patient/");
+    system("exec mkdir db/Provider/");
+    system("exec mkdir db/Appointment/");
+    system("exec mkdir db/Insurer/");
+    system("exec mkdir db/Coverage/");
+    system("exec mkdir db/Encounter/");
+
+    fileWrite("db/Patient/last_id", "0");
+    fileWrite("db/Provider/last_id", "0");
+    fileWrite("db/Appointment/last_id", "0");
+    fileWrite("db/Insurer/last_id", "0");
+    fileWrite("db/Coverage/last_id", "0");
+    fileWrite("db/Encounter/last_id", "0");
+}
+
 void fileWrite (std::string path, std::string v) {
     std::ofstream f;
 

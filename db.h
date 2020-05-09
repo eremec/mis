@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+void truncateDb ();
+
 void fileWrite (std::string path, std::string v);
 
 std::string fileRead (std::string path);
