@@ -3,7 +3,9 @@
 #include <sstream>
 
 void truncateDb () {
-    system("exec rm -r db/*");
+    system("exec rm -r db/");
+
+    system("exec mkdir db/");
 
     system("exec mkdir db/Patient/");
     system("exec mkdir db/Provider/");
