@@ -73,7 +73,7 @@ void writeResource (std::string resourceType, int id, std::string value) {
 
 
 
-Patient createPatient(Patient pt) {
+Patient create(Patient pt) {
     int id = bumpId("Patient");
     pt.id = id;
 
@@ -91,7 +91,18 @@ Patient readPatient(int id) {
     return pt;
 }
 
-Appointment createAppointment(Appointment app) {
+std::vector<Patient> readPatients() {
+    std::vector<Patient> patients;
+    int lastId = std::stoi(fileRead("db/Patient/last_id"));
+    if (lastId > 0) {
+        for (int id = 1; id <= lastId; id++) {
+            patients.push_back(readPatient(id));
+        }
+    }
+    return patients;
+}
+
+Appointment create(Appointment app) {
     int id = bumpId("Appointment");
     app.id = id;
 
@@ -110,7 +121,7 @@ Appointment readAppointment(int id) {
     return app;
 }
 
-Provider createProvider(Provider pr) {
+Provider create(Provider pr) {
     int id = bumpId("Provider");
     pr.id = id;
 

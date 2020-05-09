@@ -8,7 +8,7 @@ void createReadPatient() {
 
     bool s1 = (fileRead("db/Patient/last_id") == "0");
 
-    createPatient(pt);
+    create(pt);
 
     bool s2 = (fileRead("db/Patient/last_id") == "1");
 
@@ -31,7 +31,7 @@ void createReadProvider() {
 
     bool s1 = (fileRead("db/Provider/last_id") == "0");
 
-    createProvider(pr);
+    create(pr);
 
     bool s2 = (fileRead("db/Provider/last_id") == "1");
 
@@ -44,7 +44,7 @@ void createReadProvider() {
 
     bool s4 = (fileRead("db/Provider/last_id") == "1");
 
-    createProvider(pr2);
+    create(pr2);
 
     bool s5 = (fileRead("db/Provider/last_id") == "2");
 

@@ -18,16 +18,18 @@ void writeResource (std::string resourceType, int id, std::string value);
 
 
 
-Patient createPatient(Patient pt);
+Patient create(Patient pt);
 
 Patient readPatient(int id);
 
+std::vector<Patient> readPatients();
 
-Appointment createAppointment(Appointment app);
+
+Appointment create(Appointment app);
 
 Appointment readAppointment(int id);
 
 
-Provider createProvider(Provider pr);
+Provider create(Provider pr);
 
 Provider readProvider(int id);
