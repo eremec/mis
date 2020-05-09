@@ -1,19 +1,22 @@
 #include "db.h"
+#include "print.h"
 #include <iostream>
 
+void insertPatients() {
+    std::vector<std::string> names = {"Mary", "Ann", "John", "Ahmet"};
+    for (std::string name : names) {
+        Patient pt = {.name = name};
+        create(pt);
+    }
+}
+
+void inputLoop() {
+
+}
+
 int main() {
-    Patient pt;
-    pt.name = "Mary";
-
     truncateDb();
-   // Patient createdPt = createPatient(pt);
+    insertPatients();
 
-    Appointment app;
-    app.date = "2020-05-09";
-    app.patientId = 1;
-
-   // Appointment createdApp = createAppointment(app);
-
-   // std::cout <<  "Patient id: " << createdPt.id << std::endl;
-   // std::cout <<  "Appointment id: " << createdApp.id << std::endl;
+    print(readPatients());
 }
