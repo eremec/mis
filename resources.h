@@ -1,3 +1,6 @@
+#ifndef RESOURCES_H
+#define RESOURCES_H
+
 #include <string>
 
 struct Patient {
@@ -34,3 +37,5 @@ struct Encounter {
     int providerId;
     int coverageId;
 };
+
+#endif
