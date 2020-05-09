@@ -1,13 +1,4 @@
-struct Ref {
-    int id;
-    std::string resourceType;
-};
-
-struct Date {
-    int y;
-    int m;
-    int d;
-};
+#include <string>
 
 struct Patient {
     int id;
@@ -21,8 +12,8 @@ struct Provider {
 
 struct Appointment {
     int id;
-    Date date;
-    Ref patient;
+    std::string date;
+    int patientId;
 };
 
 struct Insurer {
@@ -32,14 +23,14 @@ struct Insurer {
 
 struct Coverage {
     int id;
-    Ref patient;
-    Ref insurer;
+    int patientId;
+    int insurerId;
 };
 
 struct Encounter {
     int id;
-    Date date;
-    Ref patient;
-    Ref provider;
-    Ref coverage;
+    std::string date;
+    int patientId;
+    int providerId;
+    int coverageId;
 };

@@ -1,2 +1,2 @@
 run:
-	g++ core.cpp && ./a.out
+	g++ core.cpp db.cpp && ./a.out

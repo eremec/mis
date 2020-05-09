@@ -1,36 +1,19 @@
+#include "db.h"
 #include <iostream>
-#include <fstream>
-#include "resources.h"
 
-void fileWrite (std::string path, std::string v) {
-    std::ofstream f;
-
-    f.open(path);
-    f << v;
-    f.close();
-}
-
-std::string fileRead (std::string path) {
-    std::ifstream f;
-    std::string s;
-
-    f.open(path);
-    f >> s;
-    f.close();
-    return s;
-}
-
-Patient createPatient(Patient pt) {
-    return pt;
-}
 
 int main() {
     Patient pt;
-    pt.id = 2;
     pt.name = "Mary";
 
-  // f.open ("db/Patient/" + std::to_string(pt.id));
+    Patient createdPt = createPatient(pt);
 
-    std::cout <<  pt.name << std::endl;
-    std::cout <<  pt.id << std::endl;
+    Appointment app;
+    app.date = "2020-05-09";
+    app.patientId = 1;
+
+    Appointment createdApp = createAppointment(app);
+
+    std::cout <<  "Patient id: " << createdPt.id << std::endl;
+    std::cout <<  "Appointment id: " << createdApp.id << std::endl;
 }
