@@ -26,3 +26,8 @@ Patient readPatient(int id);
 Appointment createAppointment(Appointment app);
 
 Appointment readAppointment(int id);
+
+
+Provider createProvider(Provider pr);
+
+Provider readProvider(int id);

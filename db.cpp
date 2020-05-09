@@ -99,11 +99,29 @@ Appointment createAppointment(Appointment app) {
 }
 
 Appointment readAppointment(int id) {
-    Appointment r;
+    Appointment app;
     std::vector<std::string> vals = readResource("Appointment", id);
 
-    r.id = std::stoi(vals[0]);
-    r.date = vals[1];
-    r.patientId = std::stoi(vals[2]);
-    return r;
+    app.id = std::stoi(vals[0]);
+    app.date = vals[1];
+    app.patientId = std::stoi(vals[2]);
+    return app;
+}
+
+Provider createProvider(Provider pr) {
+    int id = bumpId("Provider");
+    pr.id = id;
+
+    std::string r = std::to_string(pr.id) + "|" + pr.name;
+    writeResource("Provider" , pr.id, r);
+    return pr;
+}
+
+Provider readProvider(int id) {
+    Provider pr;
+    std::vector<std::string> vals = readResource("Provider", id);
+
+    pr.id = std::stoi(vals[0]);
+    pr.name = vals[1];
+    return pr;
 }
