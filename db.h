@@ -35,4 +35,10 @@ Provider create(Provider pr);
 
 Provider readProvider(int id);
 
+Insurer create(Insurer in);
+
+Insurer readInsurer(int in);
+
+std::vector<Insurer> readInsurers();
+
 void insertPatients();

@@ -12,3 +12,5 @@ void print(Resource resource);
 void print(std::vector<Patient> r);
 
 void print(std::vector<Appointment> r);
+
+void print(std::vector<Insurer> r);

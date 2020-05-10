@@ -15,6 +15,13 @@ void print(Appointment app) {
     std::cout << "patientId: " << app.patientId << std::endl;
 }
 
+void print(Insurer in) {
+    std::cout << delimiter << std::endl;
+    std::cout << "id:   " << in.id << std::endl;
+    std::cout << "name: " << in.name << std::endl;
+}
+
+
 template <class Resource>
 void print(std::vector<Resource> resources) {
     for (Resource r : resources) {
@@ -25,3 +32,5 @@ void print(std::vector<Resource> resources) {
 void print(std::vector<Patient> r) {print<Patient>(r);}
 
 void print(std::vector<Appointment> r) {print<Appointment>(r);}
+
+void print(std::vector<Insurer> r) {print<Insurer>(r);}

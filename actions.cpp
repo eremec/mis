@@ -65,6 +65,8 @@ void printPatientsEffect() {print(readPatients());}
 
 void printAppointmentsEffect () {print(readAppointments());}
 
+void printInsurersEffect (){print(readInsurers());}
+
 void createPatientEffect () {
     Patient pt;
     println("Enter patient name: ");
@@ -73,6 +75,31 @@ void createPatientEffect () {
     if (confirm("Save patient? ")) {
         create(pt);
         println("Patient saved");
+    };
+}
+
+void createAppointmentEffect(){
+    Appointment app;
+    println("Enter patientId: ");
+    std::cin >> app.patientId;
+
+    println("Enter date: ");
+    std::cin >> app.date;
+
+    if (confirm("Save appointment? ")) {
+        create(app);
+        println("appointment saved");
+    };
+}
+
+void createInsurerEffect(){
+    Insurer in;
+    println("Enter Insurer name: ");
+    std::cin >> in.name;
+
+    if (confirm("Save Insurer? ")) {
+        create(in);
+        println("Insurer saved");
     };
 }
 
@@ -94,7 +121,7 @@ void initMapping() {
                .effect   = greetEffect}),
 
     ActionMap({.name     = "print",
-               .outcomes = strings({"home", "print patients", "print appointments"})}),
+               .outcomes = strings({"home", "print patients", "print appointments", "print insurers"})}),
 
     ActionMap({.name     = "print patients",
                .outcomes = strings({"home", "print"}),
@@ -104,12 +131,24 @@ void initMapping() {
                .outcomes = strings({"home", "print"}),
                .effect   = printAppointmentsEffect}),
 
+    ActionMap({.name     = "print insurers",
+               .outcomes = strings({"home", "print"}),
+               .effect   = printInsurersEffect}),
+
     ActionMap({.name     = "create",
-               .outcomes = strings({"create patient"})}),
+               .outcomes = strings({"create patient", "create appointment", "create insurer"})}),
 
     ActionMap({.name     = "create patient",
                .outcomes = strings({"home", "print", "print patients"}),
-               .effect   = printAppointmentsEffect}),
+               .effect   = createPatientEffect}),
+        
+    ActionMap({.name     = "create appointment",
+               .outcomes = homeOutcomes,
+               .effect   = createAppointmentEffect}),
+
+    ActionMap({.name     = "create insurer",
+               .outcomes = homeOutcomes,
+               .effect   = createInsurerEffect}),
 
     ActionMap({.name     = "admin",
                .outcomes = strings({"home", "insert defaults", "truncate"})}),
@@ -120,7 +159,9 @@ void initMapping() {
 
     ActionMap({.name     = "truncate",
                .outcomes = homeOutcomes,
-               .effect   = truncateEffect}),
+               .effect   = truncateEffect})
+    
+
 };
 }
 

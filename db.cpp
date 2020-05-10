@@ -102,6 +102,8 @@ std::vector<Patient> readPatients() {
     return patients;
 }
 
+
+
 Appointment create(Appointment app) {
     int id = bumpId("Appointment");
     app.id = id;
@@ -132,6 +134,8 @@ std::vector<Appointment> readAppointments() {
     return apps;
 }
 
+
+  
 Provider create(Provider pr) {
     int id = bumpId("Provider");
     pr.id = id;
@@ -149,6 +153,40 @@ Provider readProvider(int id) {
     pr.name = vals[1];
     return pr;
 }
+
+
+
+Insurer create(Insurer in) {
+    int id = bumpId("Insurer");
+    in.id = id;
+
+    std::string r = std::to_string(in.id) + "|" + in.name;
+    writeResource("Insurer" , in.id, r);
+    return in;
+}
+
+Insurer readInsurer(int id) {
+    Insurer in;
+    std::vector<std::string> vals = readResource("Insurer", id);
+
+    in.id = std::stoi(vals[0]);
+    in.name = vals[1];
+    return in;
+}
+
+std::vector<Insurer> readInsurers() {
+    std::vector<Insurer> ins;
+    int lastId = std::stoi(fileRead("db/Insurer/last_id"));
+    if (lastId > 0) {
+        for (int id = 1; id <= lastId; id++) {
+            ins.push_back(readInsurer(id));
+        }
+    }
+    return ins;
+}
+
+
+
 
 
 
