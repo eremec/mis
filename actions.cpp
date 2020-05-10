@@ -6,37 +6,48 @@
 #include <functional>
 #include <tuple>
 
-#define actionMap std::tuple<std::string, std::function<void()>>
 #define strings std::vector<std::string>
 
-std::vector<actionMap> actionMapping;
+void noEffect() {};
+
+struct ActionMap {
+    std::string           name;
+    strings               outcomes;
+    std::function<void()> effect = noEffect;};
+
+std::vector<ActionMap> actionMapping;
 
 void println(std::string s) {
     std::cout << s << std::endl;
 }
 
-void mapByName (std::string name) {
-    std::function<void()> match;
-    for (actionMap m : actionMapping) {
-        if (std::get<0>(m) == name) {
-            match = std::get<1>(m);
-        }
+ActionMap mapByName (std::string name) {
+    ActionMap map;
+    for (ActionMap m : actionMapping) {
+        if (m.name == name) {map = m;}
     }
-    match();
+    return map;
 }
 
-void delimit() {println("---------------------------");}
+void delim() {
+    println("");
+    println("--------------------------------");
+    println("");
+}
 
-void handleNextInput(strings outcomes) {
-    delimit();
-    for (int idx = 0; idx < outcomes.size(); idx++) {
-        println(std::to_string(idx) + ": " + outcomes[idx]);
+std::string handleNextInput(std::string name) {
+    ActionMap map = mapByName(name);
+    map.effect();
+
+    delim();
+    for (int idx = 0; idx < map.outcomes.size(); idx++) {
+        println(std::to_string(idx) + ": " + map.outcomes[idx]);
     }
-    delimit();
+    delim();
 
     int nextAction;
     std::cin >> nextAction;
-    mapByName(outcomes[nextAction]);
+    return map.outcomes[nextAction];
 }
 
 bool confirm(std::string message) {
@@ -49,39 +60,12 @@ bool confirm(std::string message) {
 }
 
 
+//Effects
+void printPatientsEffect() {print(readPatients());}
 
-strings homeOutcomes = {"print", "create", "admin"};
+void printAppointmentsEffect () {print(readAppointments());}
 
-void greetAction() {
-    strings outcomes = homeOutcomes;
-    handleNextInput(outcomes);
-}
-
-void printAction() {
-    strings outcomes = {"home", "print patients", "print appointments"};
-    handleNextInput(outcomes);
-}
-
-void printPatientsAction() {
-    strings outcomes = {"home", "print"};
-    print(readPatients());
-    handleNextInput(outcomes);
-}
-
-void printAppointmentsAction () {
-    strings outcomes = {"home", "print"};
-    print(readAppointments());
-    handleNextInput(outcomes);
-}
-
-void createAction () {
-    strings outcomes = {"home", "create patient", "create appointment"};
-    handleNextInput(outcomes);
-}
-
-void createPatientAction () {
-    strings outcomes = {"home", "print", "print patients"};
-
+void createPatientEffect () {
     Patient pt;
     println("Enter patient name: ");
     std::cin >> pt.name;
@@ -90,41 +74,60 @@ void createPatientAction () {
         create(pt);
         println("Patient saved");
     };
-
-    handleNextInput(outcomes);
 }
 
-void adminAction() {
-    strings outcomes = {"home", "insert defaults", "truncate"};
-    handleNextInput(outcomes);
-}
+void insertDefaultsEffect() {insertPatients();}
 
-void insertDefaultsAction() {
-    strings outcomes = homeOutcomes;
-    insertPatients();
-    handleNextInput(outcomes);
-}
+void truncateEffect() {truncateDb();}
 
-void truncateAction() {
-    strings outcomes = homeOutcomes;
-    truncateDb();
-    handleNextInput(outcomes);
-}
+void greetEffect() {println("Welcome");}
 
+strings homeOutcomes = {"print", "create", "admin"};
+
+
+//Init
 void initMapping() {
     actionMapping = {
-        std::make_tuple("home",               greetAction),
-        std::make_tuple("print",              printAction),
-        std::make_tuple("print patients",     printPatientsAction),
-        std::make_tuple("print appointments", printAppointmentsAction),
-        std::make_tuple("create",             createAction),
-        std::make_tuple("create patient",     createPatientAction),
-        std::make_tuple("admin",              adminAction),
-        std::make_tuple("insert defaults",    insertDefaultsAction),
-        std::make_tuple("truncate",           truncateAction)};
+
+    ActionMap({.name     = "home",
+               .outcomes = homeOutcomes,
+               .effect   = greetEffect}),
+
+    ActionMap({.name     = "print",
+               .outcomes = strings({"home", "print patients", "print appointments"})}),
+
+    ActionMap({.name     = "print patients",
+               .outcomes = strings({"home", "print"}),
+               .effect   = printPatientsEffect}),
+
+    ActionMap({.name     = "print appointments",
+               .outcomes = strings({"home", "print"}),
+               .effect   = printAppointmentsEffect}),
+
+    ActionMap({.name     = "create",
+               .outcomes = strings({"create patient"})}),
+
+    ActionMap({.name     = "create patient",
+               .outcomes = strings({"home", "print", "print patients"}),
+               .effect   = printAppointmentsEffect}),
+
+    ActionMap({.name     = "admin",
+               .outcomes = strings({"home", "insert defaults", "truncate"})}),
+
+    ActionMap({.name     = "insert defaults",
+               .outcomes = homeOutcomes,
+               .effect   = insertDefaultsEffect}),
+
+    ActionMap({.name     = "truncate",
+               .outcomes = homeOutcomes,
+               .effect   = truncateEffect}),
+};
 }
 
 void inputLoop() {
     initMapping();
-    mapByName("home");
+    std::string page = "home";
+    while (true) {
+       page = handleNextInput(page);
+    }
 }
