@@ -8,12 +8,6 @@ void print(Patient pt) {
     std::cout << "name: " << pt.name << std::endl;
 }
 
-void print(std::vector<Patient> patients) {
-    for (Patient pt : patients) {
-        print(pt);
-    }
-}
-
 void print(Appointment app) {
     std::cout << delimiter << std::endl;
     std::cout << "id:        " << app.id << std::endl;
@@ -21,8 +15,13 @@ void print(Appointment app) {
     std::cout << "patientId: " << app.patientId << std::endl;
 }
 
-void print(std::vector<Appointment> apps) {
-    for (Appointment app : apps) {
-        print(app);
+template <class Resource>
+void print(std::vector<Resource> resources) {
+    for (Resource r : resources) {
+        print(r);
     }
 }
+
+void print(std::vector<Patient> r) {print<Patient>(r);}
+
+void print(std::vector<Appointment> r) {print<Appointment>(r);}

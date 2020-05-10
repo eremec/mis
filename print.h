@@ -6,4 +6,9 @@ void print(Patient pt);
 
 void print(std::vector<Patient> patients);
 
-void print(Appointment app);
+template <class Resource>
+void print(Resource resource);
+
+void print(std::vector<Patient> r);
+
+void print(std::vector<Appointment> r);
