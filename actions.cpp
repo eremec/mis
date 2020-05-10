@@ -6,11 +6,18 @@
 #include <functional>
 #include <tuple>
 
-std::vector<std::tuple<std::string, std::function<void()>>> actionMapping;
+#define actionMap std::tuple<std::string, std::function<void()>>
+#define strings std::vector<std::string>
+
+std::vector<actionMap> actionMapping;
+
+void println(std::string s) {
+    std::cout << s << std::endl;
+}
 
 void mapByName (std::string name) {
     std::function<void()> match;
-    for (std::tuple<std::string, std::function<void()>> m : actionMapping) {
+    for (actionMap m : actionMapping) {
         if (std::get<0>(m) == name) {
             match = std::get<1>(m);
         }
@@ -18,14 +25,12 @@ void mapByName (std::string name) {
     match();
 }
 
-void delimit() {
-    std::cout << "---------------------------" << std::endl;
-}
+void delimit() {println("---------------------------");}
 
-void handleNextInput(std::vector<std::string> outcomes) {
+void handleNextInput(strings outcomes) {
     delimit();
     for (int idx = 0; idx < outcomes.size(); idx++) {
-        std::cout << std::to_string(idx) + ": " + outcomes[idx] << std::endl;
+        println(std::to_string(idx) + ": " + outcomes[idx]);
     }
     delimit();
 
@@ -37,7 +42,7 @@ void handleNextInput(std::vector<std::string> outcomes) {
 bool confirm(std::string message) {
     std::string answer;
     while ((answer != "n") && (answer != "y")) {
-            std::cout << message + " (y/n)" << std::endl;
+            println(message + " (y/n)");
             std::cin >> answer;
         }
     return (answer == "y");
@@ -45,88 +50,70 @@ bool confirm(std::string message) {
 
 
 
+strings homeOutcomes = {"print", "create", "admin"};
 
 void greetAction() {
-    std::vector<std::string> outcomes =
-        {"greet", "print", "create", "admin"};
-
+    strings outcomes = homeOutcomes;
     handleNextInput(outcomes);
 }
 
 void printAction() {
-    std::vector<std::string> outcomes =
-        {"greet", "print patients", "print appointments"};
-
+    strings outcomes = {"home", "print patients", "print appointments"};
     handleNextInput(outcomes);
 }
 
 void printPatientsAction() {
-    std::vector<std::string> outcomes =
-        {"greet", "print"};
-
+    strings outcomes = {"home", "print"};
     print(readPatients());
-
     handleNextInput(outcomes);
 }
 
 void printAppointmentsAction () {
-    std::vector<std::string> outcomes =
-        {"greet", "print"};
-
+    strings outcomes = {"home", "print"};
     print(readAppointments());
-
     handleNextInput(outcomes);
 }
 
 void createAction () {
-    std::vector<std::string> outcomes =
-        {"greet", "create patient", "create appointment"};
-
+    strings outcomes = {"home", "create patient", "create appointment"};
     handleNextInput(outcomes);
 }
 
 void createPatientAction () {
-    std::vector<std::string> outcomes =
-        {"greet", "print", "print patients"};
+    strings outcomes = {"home", "print", "print patients"};
 
     Patient pt;
-    std::cout << "Enter patient name: " << std::endl;
+    println("Enter patient name: ");
     std::cin >> pt.name;
 
     if (confirm("Save patient? ")) {
         create(pt);
-        std::cout << "Patient saved" << std::endl;
+        println("Patient saved");
     };
 
     handleNextInput(outcomes);
 }
 
 void adminAction() {
-    std::vector<std::string> outcomes =
-        {"greet", "insert defaults", "truncate"};
-
+    strings outcomes = {"home", "insert defaults", "truncate"};
     handleNextInput(outcomes);
 }
 
 void insertDefaultsAction() {
-    std::vector<std::string> outcomes =
-        {"greet"};
+    strings outcomes = homeOutcomes;
     insertPatients();
-
     handleNextInput(outcomes);
 }
 
 void truncateAction() {
-    std::vector<std::string> outcomes =
-        {"greet"};
+    strings outcomes = homeOutcomes;
     truncateDb();
-
     handleNextInput(outcomes);
 }
 
 void initMapping() {
     actionMapping = {
-        std::make_tuple("greet",              greetAction),
+        std::make_tuple("home",               greetAction),
         std::make_tuple("print",              printAction),
         std::make_tuple("print patients",     printPatientsAction),
         std::make_tuple("print appointments", printAppointmentsAction),
@@ -134,10 +121,10 @@ void initMapping() {
         std::make_tuple("create patient",     createPatientAction),
         std::make_tuple("admin",              adminAction),
         std::make_tuple("insert defaults",    insertDefaultsAction),
-        std::make_tuple("truncate",          truncateAction)};
+        std::make_tuple("truncate",           truncateAction)};
 }
 
 void inputLoop() {
     initMapping();
-    mapByName("greet");
+    mapByName("home");
 }
