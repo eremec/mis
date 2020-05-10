@@ -29,7 +29,10 @@ Appointment create(Appointment app);
 
 Appointment readAppointment(int id);
 
+std::vector<Appointment> readAppointments();
 
 Provider create(Provider pr);
 
 Provider readProvider(int id);
+
+void insertPatients();

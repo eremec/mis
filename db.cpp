@@ -121,6 +121,17 @@ Appointment readAppointment(int id) {
     return app;
 }
 
+std::vector<Appointment> readAppointments() {
+    std::vector<Appointment> apps;
+    int lastId = std::stoi(fileRead("db/Appointment/last_id"));
+    if (lastId > 0) {
+        for (int id = 1; id <= lastId; id++) {
+            apps.push_back(readAppointment(id));
+        }
+    }
+    return apps;
+}
+
 Provider create(Provider pr) {
     int id = bumpId("Provider");
     pr.id = id;
@@ -137,4 +148,14 @@ Provider readProvider(int id) {
     pr.id = std::stoi(vals[0]);
     pr.name = vals[1];
     return pr;
+}
+
+
+
+void insertPatients() { // Setup a few patients
+    std::vector<std::string> names = {"Mary", "Ann", "John", "Ahmet"};
+    for (std::string name : names) {
+        Patient pt = {.name = name};
+        create(pt);
+    }
 }

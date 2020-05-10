@@ -1,3 +1,5 @@
+void inputLoop();
+
 //createAppointment
 //1. for new patient
 //2. for old patient
