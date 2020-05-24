@@ -26,6 +26,7 @@ struct Insurer {
 
 struct Coverage {
     int id;
+    std::string memberId;
     int patientId;
     int insurerId;
 };
