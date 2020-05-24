@@ -21,6 +21,14 @@ void print(Insurer in) {
     std::cout << "name: " << in.name << std::endl;
 }
 
+void print(Coverage cov) {
+    std::cout << delimiter << std::endl;
+    std::cout << "id:   " << cov.id << std::endl;
+    std::cout << "memberId: " << cov.memberId << std::endl;
+    std::cout << "patientId: " << cov.patientId << std::endl;
+    std::cout << "insurerId: " << cov.insurerId << std::endl;
+}
+
 
 template <class Resource>
 void print(std::vector<Resource> resources) {
@@ -34,3 +42,5 @@ void print(std::vector<Patient> r) {print<Patient>(r);}
 void print(std::vector<Appointment> r) {print<Appointment>(r);}
 
 void print(std::vector<Insurer> r) {print<Insurer>(r);}
+
+void print(std::vector<Coverage> r) {print<Coverage>(r);}

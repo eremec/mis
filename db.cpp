@@ -185,7 +185,52 @@ std::vector<Insurer> readInsurers() {
     return ins;
 }
 
+Insurer findInsurerByName(std::string name) {
+    Insurer found = {.id = 0, .name = "Not found"};
 
+    for (Insurer ins : readInsurers()) {
+        if (ins.name == name) {
+            found = ins;
+        }
+    }
+    return found;
+}
+
+
+Coverage create(Coverage cov) {
+    int id = bumpId("Coverage");
+    cov.id = id;
+
+    std::string r = std::to_string(cov.id) + "|"
+        + cov.memberId + "|"
+        + std::to_string(cov.patientId) + "|"
+        + std::to_string(cov.insurerId);
+
+    writeResource("Coverage" , cov.id, r);
+    return cov;
+}
+
+Coverage readCoverage(int id) {
+    Coverage cov;
+    std::vector<std::string> vals = readResource("Coverage", id);
+
+    cov.id = std::stoi(vals[0]);
+    cov.memberId = vals[1];
+    cov.patientId = std::stoi(vals[2]);
+    cov.insurerId = std::stoi(vals[3]);
+    return cov;
+}
+
+std::vector<Coverage> readCoverages() {
+    std::vector<Coverage> covs;
+    int lastId = std::stoi(fileRead("db/Coverage/last_id"));
+    if (lastId > 0) {
+        for (int id = 1; id <= lastId; id++) {
+            covs.push_back(readCoverage(id));
+        }
+    }
+    return covs;
+}
 
 
 
@@ -195,5 +240,13 @@ void insertPatients() { // Setup a few patients
     for (std::string name : names) {
         Patient pt = {.name = name};
         create(pt);
+    }
+}
+
+void insertInsurers() { // Setup a few insurers
+    std::vector<std::string> names = {"aetna", "medicare", "fidelis"};
+    for (std::string name : names) {
+        Insurer ins = {.name = name};
+        create(ins);
     }
 }

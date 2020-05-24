@@ -31,9 +31,11 @@ Appointment readAppointment(int id);
 
 std::vector<Appointment> readAppointments();
 
+
 Provider create(Provider pr);
 
 Provider readProvider(int id);
+
 
 Insurer create(Insurer in);
 
@@ -41,4 +43,15 @@ Insurer readInsurer(int in);
 
 std::vector<Insurer> readInsurers();
 
+Insurer findInsurerByName(std::string name);
+
+Coverage create(Coverage cov);
+
+Coverage readCoverage(int cov);
+
+std::vector<Coverage> readCoverages();
+
+
 void insertPatients();
+
+void insertInsurers();
