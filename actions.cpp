@@ -160,8 +160,9 @@ void initMapping() {
     ActionMap({.name     = "truncate",
                .outcomes = homeOutcomes,
                .effect   = truncateEffect})
-    
 
+    // TODO Добавить Create/Print для Encounter, Coverage
+    // Добавить проверку активности страховки (EligibilityCheck)
 };
 }
 

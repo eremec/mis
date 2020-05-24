@@ -1,4 +1,5 @@
 #include "db.h"
+#include "eligibility_check.h"
 #include <iostream>
 
 void createReadPatient() {
@@ -61,7 +62,56 @@ void createReadProvider() {
     }
 }
 
+void checkInNewPatient() {
+    //Patient came without appointment for the first time
+    truncateDb();
+
+    //TODO insertProviders();
+    // Write function which inserts providers for our clinic
+   
+    insertPatients();
+    insertInsurers();
+
+    //Create new patient
+    Patient newPt = create(Patient({.name = "Mary"}));
+
+    //Find his insurance company
+    Insurer ins = findInsurerByName("fidelis");
+
+    //Check if it exists in our database
+    bool s1 = (ins.name == "fidelis");
+
+    //Enter patient coverage to our database
+    Coverage ptCoverage =
+        create(Coverage({.memberId  = "464TLA",
+                         .patientId = newPt.id,
+                         .insurerId = ins.id}));
+
+    // Check if coverage is active
+    bool s2 = eligibilityCheck(ptCoverage.id);
+
+    // TODO Create encounter for our patient
+    // надо добавить функции на Create, Read и Print для визита (Encounter)
+
+    if (s1 and s2) {
+        std::cout <<  "checkInNewPatient: ok" << std::endl;
+    }
+    else {
+        std::cout <<  "checkInNewPatient: failed" << std::endl;
+    }
+}
+
+void checkInExistingPatient() {
+    // TODO add scenario when patient came for the second time
+    // and already has a coverage. Coverage is inactive
+    //
+    // TODO Надо добавить функцию поиска пациента по имени, как findInsurerByName
+    // TODO Надо добавить функцию поиска страховки по ID пациента
+}
+
 int main() {
     createReadPatient();
     createReadProvider();
+    checkInNewPatient();
+    checkInExistingPatient();
 }
