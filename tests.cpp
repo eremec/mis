@@ -73,7 +73,9 @@ void checkInNewPatient() {
     insertInsurers();
 
     //Create new patient
-    Patient newPt = create(Patient({.name = "Mary"}));
+    Patient pt;
+    pt.name = "Mary";
+    Patient newPt = create(pt);
 
     //Find his insurance company
     Insurer ins = findInsurerByName("fidelis");
@@ -82,10 +84,11 @@ void checkInNewPatient() {
     bool s1 = (ins.name == "fidelis");
 
     //Enter patient coverage to our database
-    Coverage ptCoverage =
-        create(Coverage({.memberId  = "464TLA",
-                         .patientId = newPt.id,
-                         .insurerId = ins.id}));
+    Coverage cov;
+    cov.memberId  = "464TLA";
+    cov.patientId = newPt.id;
+    cov.insurerId = ins.id;
+    Coverage ptCoverage = create(cov);
 
     // Check if coverage is active
     bool s2 = eligibilityCheck(ptCoverage.id);
