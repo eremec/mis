@@ -78,6 +78,17 @@ void createPatientEffect () {
     };
 }
 
+void deletePatientEffect() {
+    int id;
+    println("Enter patient id: ");
+    std::cin >> id;
+
+    if (confirm("Delete patient? ")) {
+        deletePatient(id);
+        println("Patient deleted");
+    };
+}
+
 void createAppointmentEffect(){
     Appointment app;
     println("Enter patientId: ");
@@ -109,7 +120,7 @@ void truncateEffect() {truncateDb();}
 
 void greetEffect() {println("Welcome");}
 
-strings homeOutcomes = {"print", "create", "admin"};
+strings homeOutcomes = {"print", "create", "admin", "delete patient"};
 
 
 //Init
@@ -137,6 +148,10 @@ void initMapping() {
 
     ActionMap({.name     = "create",
                .outcomes = strings({"create patient", "create appointment", "create insurer"})}),
+
+    ActionMap({.name     = "delete patient",
+               .outcomes = homeOutcomes,
+               .effect   = deletePatientEffect}),
 
     ActionMap({.name     = "create patient",
                .outcomes = strings({"home", "print", "print patients"}),

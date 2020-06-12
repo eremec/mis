@@ -109,9 +109,32 @@ void checkInExistingPatient() {
     // TODO Надо добавить функцию поиска страховки по ID пациента
 }
 
+void deletePatientTest() {
+    truncateDb();
+    insertPatients();
+
+    deletePatient(1);
+    Patient pt = readPatient(1);
+
+    bool s1 = (pt.id == 0);
+    bool s2 = (fileRead("db/Patient/deleted") == "|1");
+
+    deletePatient(2);
+    bool s3 = (fileRead("db/Patient/deleted") == "|1|2");
+
+    if (s1 and s2 and s3) {
+        std::cout <<  "deletePatientTest: ok" << std::endl;
+    }
+    else {
+        std::cout <<  "deletePatientTest: failed" << std::endl;
+    }
+
+}
+
 int main() {
     createReadPatient();
     createReadProvider();
     checkInNewPatient();
     checkInExistingPatient();
+    deletePatientTest();
 }

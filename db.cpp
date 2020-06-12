@@ -2,6 +2,14 @@
 #include <fstream>
 #include <sstream>
 
+bool contains(std::vector<std::string> seq, std::string s) {
+    bool checkResult = false;
+    for (std::string el : seq) {
+        if (el == s) {checkResult = true;}
+    }
+    return checkResult;
+}
+
 void truncateDb () {
     system("exec rm -r db/");
 
@@ -83,20 +91,38 @@ Patient create(Patient pt) {
 }
 
 Patient readPatient(int id) {
-    Patient pt;
-    std::vector<std::string> vals = readResource("Patient", id);
+    std::vector<std::string> ids = splitStr(fileRead("db/Patient/deleted"), '|');
 
-    pt.id = std::stoi(vals[0]);
-    pt.name = vals[1];
+    Patient pt;
+    if (contains(ids, std::to_string(id))) {
+        pt.id = 0;
+    }
+    else {
+        std::vector<std::string> vals = readResource("Patient", id);
+
+        pt.id = std::stoi(vals[0]);
+        pt.name = vals[1];
+    }
+
     return pt;
+}
+
+void deletePatient(int id) {
+    std::string ids = fileRead("db/Patient/deleted");
+    fileWrite("db/Patient/deleted", ids + "|" + std::to_string(id));
 }
 
 std::vector<Patient> readPatients() {
     std::vector<Patient> patients;
+    Patient buff;
+
     int lastId = std::stoi(fileRead("db/Patient/last_id"));
     if (lastId > 0) {
         for (int id = 1; id <= lastId; id++) {
-            patients.push_back(readPatient(id));
+            buff = readPatient(id);
+            if (buff.id != 0) {
+                patients.push_back(buff);
+            }
         }
     }
     return patients;

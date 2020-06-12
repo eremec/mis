@@ -24,6 +24,8 @@ Patient readPatient(int id);
 
 std::vector<Patient> readPatients();
 
+void deletePatient(int id);
+
 
 Appointment create(Appointment app);
 
